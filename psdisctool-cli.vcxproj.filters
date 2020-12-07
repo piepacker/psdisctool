@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="cliapp\main_cli.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="icy-app-glue\fi-icyglue-BuildConfig.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="icy-app-glue\icy_assert.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="icy-app-glue\icy_log.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="inc">
+      <UniqueIdentifier>{f9123917-c862-40cd-a716-fdf4e016fa5b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

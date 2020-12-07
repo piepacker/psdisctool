@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="cliapp\main_cli.cpp" />
+    <ClCompile Include="src\psdisc-cdvd-image.cpp" />
+    <ClCompile Include="src\psdisc-filesystem-ecma-119.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="icy-app-glue\icy_assert.h">
+      <Filter>icy-app-glue</Filter>
+    </ClInclude>
+    <ClInclude Include="icy-app-glue\icy_log.h">
+      <Filter>icy-app-glue</Filter>
+    </ClInclude>
+    <ClInclude Include="icy-app-glue\fi-icyglue-BuildConfig.h">
+      <Filter>icy-app-glue</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\psdisc-cdvd-image.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\psdisc-endian.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\psdisc-filesystem.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\psdisc-hostio.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\psdisc-types.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="icy-app-glue">
+      <UniqueIdentifier>{f122f278-210a-4825-8a03-f8b14ba045b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc">
+      <UniqueIdentifier>{d673f9ac-97b1-42b7-acf1-d2775314c9ea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
