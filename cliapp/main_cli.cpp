@@ -32,16 +32,28 @@ struct fileEnt_t
 };
 
 
-using UDF_FilesBySector  = std::map <psdisc_off_t,fileEnt_t>;
+using FilesBySectorLUT      = std::map <psdisc_off_t,fileEnt_t>;
+using FilesByDirectoryLUT   = std::map <fs::path,fileEnt_t>;
+using DirsBySectorLUT       = std::map <psdisc_off_t,fs::path>;
 
-UDF_FilesBySector m_filesBySector;
+FilesBySectorLUT      m_filesBySector;
+FilesByDirectoryLUT   m_filesByDir;
+DirsBySectorLUT       m_dirsBySector;
+
+void recurse_parent_walk(fs::path& dest, psdisc_off_t parent) {
+    const auto& psec = m_filesBySector[parent];
+    if (psec.parent_sector) {
+        recurse_parent_walk(dest, psec.parent_sector);
+    }
+    if (psec.name[0]) {
+        dest /= psec.name;
+    }
+};
 
 
 void AddFile(psdisc_off_t secstart, psdisc_off_t len, int type, const uint8_t* name, int nameLen, psdisc_off_t parent)
 {
     dbg_check( nameLen <= kPsDiscMaxFileNameLength );
-
-    bool isDup = m_filesBySector.count(secstart);
 
     if (g_bVerbose) {
         log_error( "AddFile [parent=%-6jd sector=%-6jd len=%-10jd]: %s",
@@ -72,7 +84,21 @@ void AddFile(psdisc_off_t secstart, psdisc_off_t len, int type, const uint8_t* n
     }
 
     m_filesBySector.insert({secstart, fe});
-    //m_filesBySector.size();
+    if (type == FILETYPE_DIR) {
+        fs::path dirdest;
+        recurse_parent_walk(dirdest, secstart);
+        m_dirsBySector.insert({secstart, dirdest});
+    }
+}
+
+// currently must be done as a separate pass, since AddFile may not be called in dir-followed-by-files order.
+void buildFilesByDirLUT()
+{
+    for(const auto& item : m_filesBySector) {
+        auto& fe = item.second;
+        auto dir = m_dirsBySector[fe.parent_sector] / fe.name;
+        m_filesByDir.insert({dir, fe});
+    }
 }
 
 // Plan here is to continue to flesh this out and (eventually) move it into the library once the API
@@ -95,6 +121,18 @@ void MediaReaderIfc::Construct(psdisc_off_t imgsize_in_bytes, PsDisc_IO_Interfac
     ioifc = ioInterface;
     media.image_size = imgsize_in_bytes;
 }
+
+template <typename T>
+struct reversion_wrapper { T& iterable; };
+
+template <typename T>
+auto begin (reversion_wrapper<T> w) { return std::rbegin(w.iterable); }
+
+template <typename T>
+auto end (reversion_wrapper<T> w) { return std::rend(w.iterable); }
+
+template <typename T>
+reversion_wrapper<T> reverse (T&& iterable) { return { iterable }; }
 
 // Always reads 2048 bytes per sector. Assumes data mode operation only. Disregards the CDROM
 // audio tracks sector mode(s). 2048 bytes is the ISO standard for data tracks, and in the case
@@ -179,8 +217,17 @@ int main(int argc, char* argv[]) {
     //bool has_stdin = ((fseek(stdin, 0, SEEK_END), ftell(stdin)) > 0);
     //rewind(stdin);
 
+    const char* cli_cmd = "fullinfo";
+    int args_start = 1;
+    if (argc > 1) {
+             if (strcmp(argv[1], "ls"       )==0)    { cli_cmd = "ls"         ; args_start++; }
+        else if (strcmp(argv[1], "extract"  )==0)    { cli_cmd = "extract"    ; args_start++; }
+        else if (strcmp(argv[1], "mediainfo")==0)    { cli_cmd = "mediainfo"  ; args_start++; }
+        else if (strcmp(argv[1], "fullinfo" )==0)    { cli_cmd = "fullinfo"   ; args_start++; }
+    }
+
     bool end_of_switches = 0;       // set to 1 by '--' positional arg
-    for(int i=1; i<argc; ++i) {
+    for(int i=args_start; i<argc; ++i) {
         auto* curarg = argv[i];
         if (!curarg || !curarg[0]) continue;
 
@@ -210,7 +257,20 @@ int main(int argc, char* argv[]) {
         // RECONSIDER - it might be a better idea to have several different tools, eg:
         //     - psdisc-ls       - list dirs, other info
         //     - psdisc-extract  - extract file(s)
-        printf("psdisctool - extract information, filesystem, and file contents from PS1/PS2 disc image.\n");
+        puts("psdisctool - extract information, filesystem, and file contents from PS1/PS2 disc image.");
+        puts("");
+        puts("usage:");
+        puts("  psdisctool [command] [options] infile infile...");
+        puts("");
+        puts("commands:");
+        puts("  ls             list files on the image");
+        puts("  mediainfo      display media type information only, do not grok filesystem");
+        puts("  fullinfo       display media type, filesystem, PlayStation metadata, etc");
+        puts("  extract        extract file(s) from the disc image (not implemented)");
+        puts("");
+        puts("options:");
+        puts("  --verbose=[0,1]     write verbose trace output to stderr.");
+        puts("  (todo)");
         exit(0);
     }
 
@@ -244,11 +304,23 @@ int main(int argc, char* argv[]) {
             continue;
         }
 
-        printf("(ls) %s:\n", filename.c_str());
-        PsDiscDirParser parser;
-        parser.read_data_cb = [&](uint8_t* dest, psdisc_off_t sector, psdisc_off_t offset, psdisc_off_t length) {
-            return ifc.ReadData2048(dest, sector, offset, length);
-        };      
-        parser.ReadFilesystem(AddFile);
+        if (strcmp(cli_cmd, "fullinfo") == 0) {
+            log_host("(media) file_header: %jd"    , JFMT(ifc.media.offset_file_header  ));
+            log_host("(media) sector_size: %jd"    , JFMT(ifc.media.getSectorSize()     ));
+            log_host("(media) sectors: %jd"        , JFMT(ifc.media.getNumSectors()     ));
+            log_host("(media) sector_leadin: %jd"  , JFMT(ifc.media.offset_sector_leadin));
+
+            log_host("(ls) %s:", filename.c_str());
+            PsDiscDirParser parser;
+            parser.read_data_cb = [&](uint8_t* dest, psdisc_off_t sector, psdisc_off_t offset, psdisc_off_t length) {
+                return ifc.ReadData2048(dest, sector, offset, length);
+            };      
+            parser.ReadFilesystem(AddFile);
+            buildFilesByDirLUT();
+
+            for(auto& item : reverse(m_filesByDir)) {
+                log_host("(ls) %s", item.first.uni_string().c_str());
+            }
+        }
     }
 }
