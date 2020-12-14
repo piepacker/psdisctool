@@ -14,7 +14,7 @@
 // returns TRUE if the given sector contains CD001 signature.
 // This check is good when you know the incoming media is _some_ kind of CD image. If using 
 // this check broadly on binary data of unknown origin, it will probably report false positives.
-static bool Has_CD001(PsDiscFn_ioReadP read_cb, x_off_t sector_size_guess, x_off_t offset_guess)
+static bool Has_CD001(PsDiscFn_ioPread read_cb, x_off_t sector_size_guess, x_off_t offset_guess)
 {
     auto offset = (sector_size_guess * 16) + offset_guess;
 
@@ -35,11 +35,11 @@ static bool Has_CD001(PsDiscFn_ioReadP read_cb, x_off_t sector_size_guess, x_off
 }
 
 template<intmax_t _dest_size>
-bool _read_sector(const MediaSourceDescriptor& desc, PsDiscFn_ioReadP read_cb, uint8_t (&dest)[_dest_size], psdisc_off_t sector) {
+bool _read_sector(const MediaSourceDescriptor& desc, PsDiscFn_ioPread read_cb, uint8_t (&dest)[_dest_size], psdisc_off_t sector) {
     return read_cb(dest, _dest_size, (sector * desc.sector_size) + desc.offset_file_header);
 }
 
-bool DiscFS_DetectLayerBreak(PsDiscFn_ioReadP read_cb, MediaSourceDescriptor& desc)
+bool DiscFS_DetectLayerBreak(PsDiscFn_ioPread read_cb, MediaSourceDescriptor& desc)
 {
     // layerBreak is a feature of DVDs ony, and DVD disc images always have 2048 size sectors.
     if(desc.sector_size != 2048) {
@@ -94,7 +94,7 @@ bool DiscFS_DetectLayerBreak(PsDiscFn_ioReadP read_cb, MediaSourceDescriptor& de
 }
 
 
-psdisc_off_t DiscFS_DetectMediaDescription(MediaSourceDescriptor& desc, PsDiscFn_ioReadP read_cb)
+bool DiscFS_DetectMediaDescription(MediaSourceDescriptor& desc, PsDiscFn_ioPread read_cb)
 {
     bool    bDVD = false;
 
@@ -124,16 +124,16 @@ psdisc_off_t DiscFS_DetectMediaDescription(MediaSourceDescriptor& desc, PsDiscFn
 
     if(Has_CD001(read_cb, 2352, 8)) {
         desc.sector_size            = 2352;
-        desc.offset_file_header = 0;
+        desc.offset_file_header     = 0;
         desc.offset_sector_leadin   = 8;    // mode1
     } else
 
     if(Has_CD001(read_cb, 2048, 0)) {
         desc.sector_size            = 2048;
-        desc.offset_file_header = 0;
+        desc.offset_file_header     = 0;
         desc.offset_sector_leadin   = 0;    // mode0
     } else {
-        dbg_check(false, "Unknown image format.");
+        log_error("Unable to detect disc image format.");
         return 0;
     }
 
@@ -152,12 +152,14 @@ psdisc_off_t DiscFS_DetectMediaDescription(MediaSourceDescriptor& desc, PsDiscFn
 
     desc.num_sectors = (desc.image_size - desc.offset_file_header) / desc.sector_size;
 
-    if (!DiscFS_DetectLayerBreak(read_cb, desc)) return false;
+    if (desc.sector_size == 2048 || desc.sector_size == 2064) {
+        DiscFS_DetectLayerBreak(read_cb, desc);
+    }
 
     return true;
 }
 
-psdisc_off_t DiscFS_DetectMediaDescription(MediaSourceDescriptor& desc, int fd)
+bool DiscFS_DetectMediaDescription(MediaSourceDescriptor& desc, int fd)
 {
     return DiscFS_DetectMediaDescription(desc,
         [&](void* dest, size_t count, x_off_t pos) {

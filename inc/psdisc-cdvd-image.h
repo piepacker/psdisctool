@@ -60,6 +60,6 @@ struct MediaSourceDescriptor {
     }
 };
 
-extern bool      DiscFS_DetectLayerBreak(PsDiscFn_ioReadP read_cb, MediaSourceDescriptor& desc);
-extern psdisc_off_t DiscFS_DetectMediaDescription(MediaSourceDescriptor& desc, PsDiscFn_ioReadP read_cb);
-extern psdisc_off_t DiscFS_DetectMediaDescription(MediaSourceDescriptor& desc, int fd);
+extern bool     DiscFS_DetectLayerBreak(PsDiscFn_ioPread read_cb, MediaSourceDescriptor& desc);
+extern bool     DiscFS_DetectMediaDescription(MediaSourceDescriptor& desc, PsDiscFn_ioPread read_cb);
+extern bool     DiscFS_DetectMediaDescription(MediaSourceDescriptor& desc, int fd);
