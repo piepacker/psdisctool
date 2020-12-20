@@ -1,27 +1,56 @@
-# PSX-Disc-FS - a PS1/PS2 Disc Filesystem Library
+# psdisctool - a PS1/PS2 Disc Filesystem tool
 
 # Overview
 
-The goal of this library is to provide high-level filesystem emulation for emulators that
-rely on CD or DVD media, with a particular focus on PS1 and PS2 emulators. The project
-provides an API to parse and enumerate the contents of PS1 and PS2 disc images, in a
-similar manner to the Playstation BIOS itself.
+Provides automation-friendly PS1/PS2 disc filesystem tools:
+ - identify disc media types (iso/bin)
+ - list filesystem directories
+ - extract files
+ - _(coming soon)_ modify files
+ - _(coming soon)_ advanced media type optimizations
 
-CDROM and DVD media filesystems are typically following the ECMA-119 standard, though
-some console BIOSes may have only supported a subset of this standard needed to ship
-games cheaply and reduce BIOS code complexity.
+# Usage Samples
 
-### what the project is intended for
+Latest usage info is usually best obtained from the tool itself:
 
- - for BIOS HLE implementations in PS1 and PS2 emulators
- - for standalone utilities that perform static analysis and batch operations across
-   a large collection of disc images
+```
+$ ./psdisctool --help
+```
 
-### what this project is not
+_(todo: add usage samples)_
 
-This project is not intended to be any of the following:
- - a fully ECMA-119 compliant library
+# Developer Section (clone, build, etc)
 
-# Future Plans
+## Clone and Build
 
- - Add support for modifying and re-writing filesystems
+### Dependencies
+
+Git repository dependencies for this project are:
+
+ - libpsdisc
+ - icystdlib
+
+Dependencies can be cloned out as either git submodules or as external individual clones, depending
+on what best suits your workflow. For basic development, git submodules are recommended:
+
+```
+$ git submodule update --init
+```
+
+#### advanced dependency cloning (clogen)
+
+Probably you don' want to use this. It's something I make use of as a developer of `icyStdLib` but for the most part
+git submodules should always be preferred. Individual clones can be initialized by running the `clogen-` scripts:
+
+```
+# default [path-to-clone] is ../projname, eg. ../icystdlib and ../libpsdisc
+
+ $ ./clogen-libpsdisc.sh [path-to-clone]
+ $ ./clogen-icystdlib.sh [path-to-clone]
+```
+
+These scripts generate configuration files in the `msbuild/clogen/` dir, which tell the `vcxproj` where to find the
+files and includes for these dependencies. BWhen the clogen files do not exist, the system assumes git submodule
+mode. If submodules have not been initialized, you will get build errors for missing content.
+
+_(todo: add a message to msbuild indicating actions to resolve missing dependencies)_
