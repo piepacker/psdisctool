@@ -27,8 +27,8 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup>
-    <PathToIcyStdlib Condition="'$(PathToIcyStdlib)' == ''">icystdlib</PathToIcyStdlib>
-    <PathToLibPsdisc Condition="'$(PathToLibPsdisc)' == ''">libpsdisc</PathToLibPsdisc>
+    <PATH_TO_ICYSTDLIB Condition="'$(PATH_TO_ICYSTDLIB)' == ''">icystdlib</PATH_TO_ICYSTDLIB>
+    <PATH_TO_LIBPSDISC Condition="'$(PATH_TO_LIBPSDISC)' == ''">libpsdisc</PATH_TO_LIBPSDISC>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
@@ -46,15 +46,15 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(PathToLibPsdisc)/inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(PATH_TO_LIBPSDISC)/inc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(PathToIcyStdLib)/inc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)icy-app-glue</AdditionalIncludeDirectories>
       <!-- <ForcedIncludeFiles>%(ForcedIncludeFiles);$(ProjectDir)fi-BuildConfig.h</ForcedIncludeFiles> -->
       <ForcedIncludeFiles>%(ForcedIncludeFiles);fi-icyglue-BuildConfig.h</ForcedIncludeFiles>
     </ClCompile>
   </ItemDefinitionGroup>
-  <Import Project="$(PathTolibpsdisc)/srclist_libpsdisc.msbuild" />
-  <Import Project="$(PathToIcyStdLib)/srclist_icystdlib.msbuild" />
+  <Import Project="$(PATH_TO_LIBPSDISC)/srclist_libpsdisc.msbuild" />
+  <Import Project="$(PATH_TO_ICYSTDLIB)/srclist_icystdlib.msbuild" />
   <ItemGroup>
     <ClCompile Include="cliapp\main_cli.cpp" />
   </ItemGroup>

@@ -2,16 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="cliapp\main_cli.cpp" />
-    <ClCompile Include="$(PathToLibPsdisc)\src\psdisc-filesystem-ecma-119.cpp" />
-    <ClCompile Include="$(PathToLibPsdisc)\src\psdisc-cdvd-image.cpp" />
-    <ClCompile Include="$(PathToIcyStdlib)/src/filesystem.msw.cpp" />
-    <ClCompile Include="$(PathToIcyStdlib)/src/fs.cpp" />
-    <ClCompile Include="$(PathToIcyStdlib)/src/logger_local_buffer.cpp" />
-    <ClCompile Include="$(PathToIcyStdlib)/src/msw-printf-stdout.cpp" />
-    <ClCompile Include="$(PathToIcyStdlib)/src/msw_app_console_init.cpp" />
-    <ClCompile Include="$(PathToIcyStdlib)/src/posix_file.cpp" />
-    <ClCompile Include="$(PathToIcyStdlib)/src/sce/filesystem.ps4.cpp" />
-    <ClCompile Include="$(PathToIcyStdlib)/src/StringUtil.cpp" />
+    <ClCompile Include="$(PATH_TO_LIBPSDISC)\src\psdisc-filesystem-ecma-119.cpp" />
+    <ClCompile Include="$(PATH_TO_LIBPSDISC)\src\psdisc-cdvd-image.cpp" />
+    <ClCompile Include="$(PATH_TO_ICYSTDLIB)/src/filesystem.msw.cpp" />
+    <ClCompile Include="$(PATH_TO_ICYSTDLIB)/src/fs.cpp" />
+    <ClCompile Include="$(PATH_TO_ICYSTDLIB)/src/logger_local_buffer.cpp" />
+    <ClCompile Include="$(PATH_TO_ICYSTDLIB)/src/msw-printf-stdout.cpp" />
+    <ClCompile Include="$(PATH_TO_ICYSTDLIB)/src/msw_app_console_init.cpp" />
+    <ClCompile Include="$(PATH_TO_ICYSTDLIB)/src/posix_file.cpp" />
+    <ClCompile Include="$(PATH_TO_ICYSTDLIB)/src/sce/filesystem.ps4.cpp" />
+    <ClCompile Include="$(PATH_TO_ICYSTDLIB)/src/StringUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="icy-app-glue\fi-icyglue-BuildConfig.h">
@@ -23,11 +23,11 @@
     <ClInclude Include="icy-app-glue\icy_log.h">
       <Filter>inc</Filter>
     </ClInclude>
-    <ClInclude Include="$(PathToLibPsdisc)\inc\psdisc-filesystem.h" />
-    <ClInclude Include="$(PathToLibPsdisc)\inc\psdisc-cdvd-image.h" />
-    <ClInclude Include="$(PathToLibPsdisc)\inc\psdisc-endian.h" />
-    <ClInclude Include="$(PathToLibPsdisc)\inc\psdisc-hostio.h" />
-    <ClInclude Include="$(PathToLibPsdisc)\inc\psdisc-types.h" />
+    <ClInclude Include="$(PATH_TO_LIBPSDISC)\inc\psdisc-filesystem.h" />
+    <ClInclude Include="$(PATH_TO_LIBPSDISC)\inc\psdisc-cdvd-image.h" />
+    <ClInclude Include="$(PATH_TO_LIBPSDISC)\inc\psdisc-endian.h" />
+    <ClInclude Include="$(PATH_TO_LIBPSDISC)\inc\psdisc-hostio.h" />
+    <ClInclude Include="$(PATH_TO_LIBPSDISC)\inc\psdisc-types.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="inc">

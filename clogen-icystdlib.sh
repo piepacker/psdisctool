@@ -21,7 +21,7 @@ mkdir -p $propsgendir
 '<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PathToIcyStdlib>'"$mswpath"'</PathToIcyStdlib>
+    <PATH_TO_ICYSTDLIB Condition="'$(PATH_TO_ICYSTDLIB)' == ''">'"$mswpath"'</PATH_TO_ICYSTDLIB>
   </PropertyGroup>
 </Project>
 '
