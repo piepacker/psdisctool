@@ -47,7 +47,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(PathToLibPsdisc)/inc</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)icyStdLib/inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(PathToIcyStdLib)/inc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)icy-app-glue</AdditionalIncludeDirectories>
       <!-- <ForcedIncludeFiles>%(ForcedIncludeFiles);$(ProjectDir)fi-BuildConfig.h</ForcedIncludeFiles> -->
       <ForcedIncludeFiles>%(ForcedIncludeFiles);fi-icyglue-BuildConfig.h</ForcedIncludeFiles>
@@ -62,11 +62,6 @@
     <ClInclude Include="icy-app-glue\fi-icyglue-BuildConfig.h" />
     <ClInclude Include="icy-app-glue\icy_assert.h" />
     <ClInclude Include="icy-app-glue\icy_log.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="icystdlib\icyStdLib.vcxproj">
-      <Project>{9EEC80A7-4AA5-4349-A51D-79CBA30821D3}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

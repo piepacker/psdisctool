@@ -2,16 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="cliapp\main_cli.cpp" />
-    <ClCompile Include="src\psdisc-filesystem-ecma-119.cpp" />
-    <ClCompile Include="src\psdisc-cdvd-image.cpp" />
-    <ClCompile Include="src/filesystem.msw.cpp" />
-    <ClCompile Include="src/fs.cpp" />
-    <ClCompile Include="src/logger_local_buffer.cpp" />
-    <ClCompile Include="src/msw-printf-stdout.cpp" />
-    <ClCompile Include="src/msw_app_console_init.cpp" />
-    <ClCompile Include="src/posix_file.cpp" />
-    <ClCompile Include="src/sce/filesystem.ps4.cpp" />
-    <ClCompile Include="src/StringUtil.cpp" />
+    <ClCompile Include="$(PathToLibPsdisc)\src\psdisc-filesystem-ecma-119.cpp" />
+    <ClCompile Include="$(PathToLibPsdisc)\src\psdisc-cdvd-image.cpp" />
+    <ClCompile Include="$(PathToIcyStdlib)/src/filesystem.msw.cpp" />
+    <ClCompile Include="$(PathToIcyStdlib)/src/fs.cpp" />
+    <ClCompile Include="$(PathToIcyStdlib)/src/logger_local_buffer.cpp" />
+    <ClCompile Include="$(PathToIcyStdlib)/src/msw-printf-stdout.cpp" />
+    <ClCompile Include="$(PathToIcyStdlib)/src/msw_app_console_init.cpp" />
+    <ClCompile Include="$(PathToIcyStdlib)/src/posix_file.cpp" />
+    <ClCompile Include="$(PathToIcyStdlib)/src/sce/filesystem.ps4.cpp" />
+    <ClCompile Include="$(PathToIcyStdlib)/src/StringUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="icy-app-glue\fi-icyglue-BuildConfig.h">
@@ -23,11 +23,11 @@
     <ClInclude Include="icy-app-glue\icy_log.h">
       <Filter>inc</Filter>
     </ClInclude>
-    <ClInclude Include="inc\psdisc-filesystem.h" />
-    <ClInclude Include="inc\psdisc-cdvd-image.h" />
-    <ClInclude Include="inc\psdisc-endian.h" />
-    <ClInclude Include="inc\psdisc-hostio.h" />
-    <ClInclude Include="inc\psdisc-types.h" />
+    <ClInclude Include="$(PathToLibPsdisc)\inc\psdisc-filesystem.h" />
+    <ClInclude Include="$(PathToLibPsdisc)\inc\psdisc-cdvd-image.h" />
+    <ClInclude Include="$(PathToLibPsdisc)\inc\psdisc-endian.h" />
+    <ClInclude Include="$(PathToLibPsdisc)\inc\psdisc-hostio.h" />
+    <ClInclude Include="$(PathToLibPsdisc)\inc\psdisc-types.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="inc">
