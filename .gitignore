@@ -18,4 +18,5 @@
 obj/
 bin/
 
-
+# properties files generated when not using git submodule mode.
+msbuild/clogen
