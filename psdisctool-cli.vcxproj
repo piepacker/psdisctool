@@ -16,7 +16,7 @@
     <ProjectGuid>{29719436-9d3e-4cdc-8104-4ebe4d3cc44e}</ProjectGuid>
     <RootNamespace>msvc</RootNamespace>
   </PropertyGroup>
-  <Import Project="PlatformToolsetMsw.props" />
+  <Import Project="msbuild/PlatformToolsetMsw.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -26,9 +26,16 @@
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <PathToIcyStdlib Condition="'$(PathToIcyStdlib)' == ''">icystdlib</PathToIcyStdlib>
+    <PathToLibPsdisc Condition="'$(PathToLibPsdisc)' == ''">libpsdisc</PathToLibPsdisc>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
-  <Import Project="ClCompileLink.props" />
+  <Import Project="msbuild/ClCompileLink.props" />
+  <Import Project="msbuild/clogen/icystdlib.props" Condition="exists('msbuild/clogen/icystdlib.props')" />
+  <Import Project="msbuild/clogen/libpsdisc.props" Condition="exists('msbuild/clogen/libpsdisc.props')" />
+  <Import Project="msbuild/custom_dirs.user.props" Condition="exists('msbuild/custom_dirs.user.props')" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
@@ -39,13 +46,15 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(PathToLibPsdisc)/inc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)icyStdLib/inc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)icy-app-glue</AdditionalIncludeDirectories>
       <!-- <ForcedIncludeFiles>%(ForcedIncludeFiles);$(ProjectDir)fi-BuildConfig.h</ForcedIncludeFiles> -->
       <ForcedIncludeFiles>%(ForcedIncludeFiles);fi-icyglue-BuildConfig.h</ForcedIncludeFiles>
     </ClCompile>
   </ItemDefinitionGroup>
+  <Import Project="$(PathTolibpsdisc)/srclist_libpsdisc.msbuild" />
+  <Import Project="$(PathToIcyStdLib)/srclist_icystdlib.msbuild" />
   <ItemGroup>
     <ClCompile Include="cliapp\main_cli.cpp" />
   </ItemGroup>
@@ -57,9 +66,6 @@
   <ItemGroup>
     <ProjectReference Include="icystdlib\icyStdLib.vcxproj">
       <Project>{9EEC80A7-4AA5-4349-A51D-79CBA30821D3}</Project>
-    </ProjectReference>
-    <ProjectReference Include="libpsdisc.vcxproj">
-      <Project>{29719436-9d3e-4cdc-8104-3ebe4d3cc44e}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

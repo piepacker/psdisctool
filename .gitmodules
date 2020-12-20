@@ -1,3 +1,6 @@
 [submodule "icystdlib"]
 	path = icystdlib
 	url = https://github.com/jstine35/icystdlib
+[submodule "libpsdisc"]
+	path = libpsdisc
+	url = https://github.com/piepacker/libpsdisc
