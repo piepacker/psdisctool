@@ -47,7 +47,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(PATH_TO_LIBPSDISC)/inc</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(PathToIcyStdLib)/inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(PATH_TO_ICYSTDLIB)/inc</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)icy-app-glue</AdditionalIncludeDirectories>
       <!-- <ForcedIncludeFiles>%(ForcedIncludeFiles);$(ProjectDir)fi-BuildConfig.h</ForcedIncludeFiles> -->
       <ForcedIncludeFiles>%(ForcedIncludeFiles);fi-icyglue-BuildConfig.h</ForcedIncludeFiles>
